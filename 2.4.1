@@ -9,3 +9,16 @@ class Digit:
         self.number = number
         self.angle = angle
         self.radius = radius
+   
+    def draw(self, turtle_obj):
+        x = self.radius * math.sin(math.radians(self.angle))
+        y = self.radius * math.cos(math.radians(self.angle))
+        turtle_obj.penup()
+        turtle_obj.goto(x, y - 10)
+        turtle_obj.write(str(self.number), align="center", font=("Arial", 14, "normal"))
+
+
+class Dial:
+    def __init__(self, radius=200):
+        self.radius = radius
+        self.digits = [Digit(i if i != 0 else 12, i * 30, self.radius - 30) for i in range(12)]
