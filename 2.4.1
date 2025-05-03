@@ -48,4 +48,45 @@ class Hand:
         turtle_obj.pencolor(self.color)
         turtle_obj.forward(self.length)
 
+def main():
+    screen = turtle.Screen()
+    screen.title("Аналоговий годинник")
+    screen.bgcolor("white")
+    screen.tracer(0)
+
+    dial_turtle = turtle.Turtle()
+    dial_turtle.hideturtle()
+    hand_turtle = turtle.Turtle()
+    hand_turtle.hideturtle()
+    hand_turtle.speed(0)
+
+    dial = Dial()
+    dial.draw(dial_turtle)
+
+    def update():
+        hand_turtle.clear()
+        now = datetime.now()
+
+        sec = now.second
+        minute = now.minute
+        hour = now.hour % 12
+
+
+        second_angle = sec * 6
+        minute_angle = minute * 6 + sec * 0.1
+        hour_angle = hour * 30 + minute * 0.5
+
+
+        Hand(90, 1, "red").draw(hand_turtle, second_angle)
+        Hand(70, 3, "blue").draw(hand_turtle, minute_angle)
+        Hand(50, 5, "black").draw(hand_turtle, hour_angle)
+
+        screen.update()
+        screen.ontimer(update, 1000)
+
+    update()
+    turtle.done()
+
+if __name__ == "__main__":
+    main()
 
