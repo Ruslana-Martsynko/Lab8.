@@ -22,3 +22,30 @@ class Dial:
     def __init__(self, radius=200):
         self.radius = radius
         self.digits = [Digit(i if i != 0 else 12, i * 30, self.radius - 30) for i in range(12)]
+
+            def draw(self, turtle_obj):
+        turtle_obj.penup()
+        turtle_obj.goto(0, -self.radius)
+        turtle_obj.pendown()
+        turtle_obj.circle(self.radius)
+        for digit in self.digits:
+            digit.draw(turtle_obj)
+
+
+class Hand:
+    def __init__(self, length, thickness, color):
+        self.length = length
+        self.thickness = thickness
+        self.color = color
+
+    def draw(self, turtle_obj, angle):
+        turtle_obj.penup()
+        turtle_obj.goto(0, 0)
+        turtle_obj.setheading(90)
+        turtle_obj.right(angle)
+        turtle_obj.pendown()
+        turtle_obj.pensize(self.thickness)
+        turtle_obj.pencolor(self.color)
+        turtle_obj.forward(self.length)
+
+
