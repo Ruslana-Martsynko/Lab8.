@@ -71,3 +71,63 @@ def main():
 
     dial = Dial()
     dial.draw(dial_turtle)
+def toggle_format():
+        nonlocal is_24_hour
+        is_24_hour = not is_24_hour
+
+    screen.listen()
+    screen.onkey(toggle_format, "t")  # натисни "t" для перемикання формату
+
+    def update():
+        nonlocal bg_color, digit_color
+
+        now = datetime.now()
+        hour = now.hour
+        minute = now.minute
+        sec = now.second
+
+        # Темна тема з 19:00 до 6:00
+        if hour >= 19 or hour < 6:
+            bg_color = "black"
+            digit_color = "white"
+        else:
+            bg_color = "white"
+            digit_color = "black"
+
+        screen.bgcolor(bg_color)
+        dial_turtle.clear()
+        dial_turtle.pencolor(digit_color)
+        dial.draw(dial_turtle)
+
+        hand_turtle.clear()
+        second_angle = sec * 6
+        minute_angle = minute * 6 + sec * 0.1
+        hour_angle = (hour % 12) * 30 + minute * 0.5
+
+        Hand(90, 1, "red").draw(hand_turtle, second_angle)
+        Hand(70, 3, "blue").draw(hand_turtle, minute_angle)
+        Hand(50, 5, digit_color).draw(hand_turtle, hour_angle)
+
+        # Цифровий годинник
+        digital_turtle.clear()
+        digital_turtle.penup()
+        digital_turtle.goto(0, -250)
+        digital_turtle.color(digit_color)
+
+        if is_24_hour:
+            time_str = f"{hour:02}:{minute:02}:{sec:02}"
+        else:
+            h12 = hour % 12 or 12
+            suffix = "AM" if hour < 12 else "PM"
+            time_str = f"{h12:02}:{minute:02}:{sec:02} {suffix}"
+
+        digital_turtle.write(time_str, align="center", font=("Arial", 20, "bold"))
+
+        screen.update()
+        screen.ontimer(update, 1000)
+
+    update()
+    turtle.done()
+
+if __name__ == "__main__":
+    main()
